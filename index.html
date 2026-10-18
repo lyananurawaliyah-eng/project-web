@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Digitalisasi Arsip | PT BUMI STATIONERY</title>
+  <meta name="description" content="Sistem Informasi Digitalisasi & Manajemen Kearsipan Terpadu PT BUMI STATIONERY berbasis Abjad Filing System, Kontrol Hak Akses, Backup Otomatis, dan Jadwal Retensi.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Droid Serif (Regular) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Droid+Serif:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- System Alert / Announcement Banner -->
+  <aside class="top-banner">
+    <div class="banner-content">
+      <span class="badge badge-accent"><i class="fa-solid fa-shield-halved"></i> Terenkripsi AES-256</span>
+      <span class="banner-text">Sistem Kearsipan Digital Standar ANRI • Terkoneksi Cloud S3 & Server On-Premise PT Bumi Stationery</span>
+      <span class="banner-status"><i class="fa-solid fa-circle-dot text-success pulse"></i> Sistem Online</span>
+    </div>
+  </aside>
+
+  <!-- Main Navigation Header -->
+  <header class="main-header" id="header">
+    <div class="header-container">
+      <!-- Brand Logo -->
+      <a href="#beranda" class="brand-logo" onclick="switchTab('beranda')">
+        <div class="logo-mark">
+          <img src="logo.png" alt="Logo PT BUMI STATIONERY">
+        </div>
+        <div class="logo-text">
+          <span class="company-name">PT BUMI STATIONERY</span>
+          <span class="system-title">Sistem Digitalisasi Arsip Terpadu</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="desktop-nav" aria-label="Navigasi Utama">
+        <ul class="nav-list">
+          <li><button class="nav-link active" data-tab="beranda" onclick="switchTab('beranda')"><i class="fa-solid fa-house"></i> Beranda</button></li>
+          <li><button class="nav-link" data-tab="agenda" onclick="switchTab('agenda')"><i class="fa-solid fa-book-bookmark"></i> Buku Agenda</button></li>
+          <li><button class="nav-link" data-tab="statistik" onclick="switchTab('statistik')"><i class="fa-solid fa-chart-pie"></i> Surat Masuk & Keluar</button></li>
+          <li><button class="nav-link" data-tab="abjad" onclick="switchTab('abjad')"><i class="fa-solid fa-folder-tree"></i> Abjad Filing</button></li>
+          <li><button class="nav-link" data-tab="template" onclick="switchTab('template')"><i class="fa-solid fa-file-signature"></i> Template Surat</button></li>
+          <li><button class="nav-link" data-tab="dokumentasi" onclick="switchTab('dokumentasi')"><i class="fa-solid fa-photo-film"></i> Kegiatan</button></li>
+          <li><button class="nav-link" data-tab="retensi" onclick="switchTab('retensi')"><i class="fa-solid fa-clock-rotate-left"></i> Retensi & Backup</button></li>
+          <li><button class="nav-link" data-tab="ulasan" onclick="switchTab('ulasan')"><i class="fa-solid fa-star-half-stroke"></i> Ulasan</button></li>
+          <li><button class="nav-link" data-tab="kontak" onclick="switchTab('kontak')"><i class="fa-solid fa-headset"></i> Layanan CS</button></li>
+        </ul>
+      </nav>
+
+      <!-- User Auth & Action Bar -->
+      <div class="header-actions">
+        <!-- Role Status Indicator -->
+        <div class="user-pill" id="userPill" onclick="openAuthModal()">
+          <div class="user-avatar" id="userAvatar">
+            <i class="fa-solid fa-user-lock"></i>
+          </div>
+          <div class="user-info">
+            <span class="user-role-label" id="userRoleBadge">Tamu / Tamu Publik</span>
+            <span class="user-action-sub" id="userActionText">Klik untuk Login</span>
+          </div>
+          <i class="fa-solid fa-chevron-down pill-arrow"></i>
+        </div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-toggle-btn" id="mobileMenuBtn" aria-label="Buka Menu" onclick="toggleMobileMenu()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Navigation -->
+  <div class="mobile-drawer-overlay" id="drawerOverlay" onclick="toggleMobileMenu(false)"></div>
+  <aside class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="logo.png" alt="Logo PT BUMI STATIONERY" style="width: 28px; height: 28px; object-fit: contain;">
+        <span>PT BUMI STATIONERY</span>
+      </div>
+      <button class="close-drawer-btn" onclick="toggleMobileMenu(false)" aria-label="Tutup Menu">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    
+    <div class="drawer-user-card" onclick="openAuthModal(); toggleMobileMenu(false);">
+      <div class="drawer-avatar" id="drawerAvatar"><i class="fa-solid fa-user"></i></div>
+      <div class="drawer-user-details">
+        <span class="drawer-user-title" id="drawerRoleTitle">Pengunjung Tamu</span>
+        <span class="drawer-user-action">Ketuk untuk Ganti Akun / Login</span>
+      </div>
+    </div>
+
+    <nav class="drawer-nav">
+      <button class="drawer-link active" data-tab="beranda" onclick="switchTab('beranda'); toggleMobileMenu(false);"><i class="fa-solid fa-house"></i> Beranda</button>
+      <button class="drawer-link" data-tab="agenda" onclick="switchTab('agenda'); toggleMobileMenu(false);"><i class="fa-solid fa-book-bookmark"></i> Buku Agenda Surat</button>
+      <button class="drawer-link" data-tab="statistik" onclick="switchTab('statistik'); toggleMobileMenu(false);"><i class="fa-solid fa-chart-pie"></i> Surat Masuk & Keluar</button>
+      <button class="drawer-link" data-tab="abjad" onclick="switchTab('abjad'); toggleMobileMenu(false);"><i class="fa-solid fa-folder-tree"></i> Abjad Filing System</button>
+      <button class="drawer-link" data-tab="template" onclick="switchTab('template'); toggleMobileMenu(false);"><i class="fa-solid fa-file-signature"></i> Template Surat Digital</button>
+      <button class="drawer-link" data-tab="dokumentasi" onclick="switchTab('dokumentasi'); toggleMobileMenu(false);"><i class="fa-solid fa-photo-film"></i> Galeri Kegiatan</button>
+      <button class="drawer-link" data-tab="retensi" onclick="switchTab('retensi'); toggleMobileMenu(false);"><i class="fa-solid fa-clock-rotate-left"></i> Jadwal Retensi & Backup</button>
+      <button class="drawer-link" data-tab="ulasan" onclick="switchTab('ulasan'); toggleMobileMenu(false);"><i class="fa-solid fa-star-half-stroke"></i> Penilaian Anonim</button>
+      <button class="drawer-link" data-tab="kontak" onclick="switchTab('kontak'); toggleMobileMenu(false);"><i class="fa-solid fa-headset"></i> Layanan CS & Pengaduan</button>
+    </nav>
+
+    <div class="drawer-footer">
+      <p class="drawer-address-mini">
+        <i class="fa-solid fa-location-dot"></i> Jl. Bahtera No. 114 Blok L, Semarang, Jawa Tengah | Telp. (0553) 756685
+      </p>
+    </div>
+  </aside>
+
+  <!-- Mobile Bottom Quick Navigation Bar -->
+  <nav class="mobile-bottom-nav">
+    <button class="bottom-nav-item active" data-tab="beranda" onclick="switchTab('beranda')">
+      <i class="fa-solid fa-house"></i>
+      <span>Beranda</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="agenda" onclick="switchTab('agenda')">
+      <i class="fa-solid fa-book"></i>
+      <span>Agenda</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="abjad" onclick="switchTab('abjad')">
+      <i class="fa-solid fa-folder"></i>
+      <span>Abjad</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="template" onclick="switchTab('template')">
+      <i class="fa-solid fa-pen-nib"></i>
+      <span>Template</span>
+    </button>
+    <button class="bottom-nav-item" onclick="openAuthModal()">
+      <i class="fa-solid fa-user-shield"></i>
+      <span id="bottomNavRoleText">Akun</span>
+    </button>
+  </nav>
+
+  <!-- MAIN APPLICATION CONTENT CONTAINER -->
+  <main class="main-content-wrapper" id="mainContent">
+
+    <!-- ==================== TAB 1: BERANDA (HOME / WELCOME) ==================== -->
+    <section class="tab-pane active" id="pane-beranda">
+      <!-- Hero Section with Earth Tone Warmth -->
+      <div class="hero-section">
+        <div class="hero-pattern"></div>
+        <div class="hero-container">
+          <div class="hero-text-block">
+            <div class="hero-badge">
+              <i class="fa-solid fa-building-circle-check"></i> Portal Kearsipan Resmi Perusahaan
+            </div>
+            <h1 class="hero-title">
+              Digitalisasi Arsip Cerdas & Terpadu <span class="text-terracotta">PT BUMI STATIONERY</span>
+            </h1>
+            <p class="hero-subtitle">
+              Platform modern manajemen berkas, surat masuk/keluar, sistem pengarsipan abjad standar kearsipan, pencadangan otomatis awan & lokal, serta penjaminan hak akses data terpusat.
+            </p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" onclick="switchTab('agenda')">
+                <i class="fa-solid fa-magnifying-glass"></i> Cari di Buku Agenda
+              </button>
+              <button class="btn btn-secondary" onclick="switchTab('abjad')">
+                <i class="fa-solid fa-folder-tree"></i> Jelajahi Abjad Filing
+              </button>
+              <button class="btn btn-outline" onclick="openAuthModal()">
+                <i class="fa-solid fa-key"></i> <span id="heroAuthBtnText">Masuk Akun Pengelola</span>
+              </button>
+            </div>
+            <div class="hero-trust-row">
+              <div class="trust-item"><i class="fa-solid fa-check"></i> Standar ANRI Abjad Filing</div>
+              <div class="trust-item"><i class="fa-solid fa-check"></i> Enkripsi Data Multi-Lapis</div>
+              <div class="trust-item"><i class="fa-solid fa-check"></i> Akses Berjenjang (RBAC)</div>
+              <div class="trust-item"><i class="fa-solid fa-check"></i> Pratinjau Dokumen Instan</div>
+            </div>
+          </div>
+
+          <!-- Hero Quick Status Card -->
+          <div class="hero-card-block">
+            <div class="hero-card">
+              <div class="hero-card-header">
+                <div class="company-seal">
+                  <img src="logo.png" alt="Logo PT BUMI STATIONERY" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <div>
+                  <h3 class="card-title-main">PT BUMI STATIONERY</h3>
+                  <p class="card-subtitle-main">Pusat Arsip & Dokumentasi Perusahaan</p>
+                </div>
+              </div>
+              <div class="company-address-box">
+                <p><strong><i class="fa-solid fa-map-location-dot"></i> Kantor Pusat:</strong></p>
+                <p>Jl. Bahtera No. 114 Blok L, Semarang, Jawa Tengah, Indonesia</p>
+                <p class="mt-1"><i class="fa-solid fa-phone"></i> Telp. (0553) 756685 | <i class="fa-solid fa-envelope"></i> justforexampleyea@gmail.com</p>
+              </div>
+              <div class="storage-health-widget">
+                <div class="storage-row">
+                  <span class="storage-name"><i class="fa-solid fa-server"></i> Server Lokal On-Premise:</span>
+                  <span class="storage-value text-sage">Tersambung (342.6 GB / 1 TB)</span>
+                </div>
+                <div class="progress-bar-wrap">
+                  <div class="progress-bar-fill" style="width: 34.2%"></div>
+                </div>
+                <div class="storage-row mt-2">
+                  <span class="storage-name"><i class="fa-solid fa-cloud"></i> Sinkronisasi Cloud Mirror (S3):</span>
+                  <span class="storage-value text-success"><i class="fa-solid fa-check-circle"></i> Sinkron Otomatis Aktif</span>
+                </div>
+                <div class="backup-last-time">
+                  <i class="fa-solid fa-clock-rotate-left"></i> Cadangan Otomatis Terakhir: <strong id="heroLastBackupText">Hari ini, 03:00 WIB</strong>
+                </div>
+              </div>
+              <div class="hero-card-footer">
+                <button class="btn btn-sm btn-terracotta w-100" onclick="switchTab('retensi')">
+                  <i class="fa-solid fa-hard-drive"></i> Periksa Status Backup & Retensi
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Counter -->
+      <section class="section-container stats-overview-section">
+        <div class="section-header-compact">
+          <h2 class="section-heading">Ringkasan Volume Kearsipan</h2>
+          <span class="section-tagline">Statistik real-time arsip surat dan aktivitas digital</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card" onclick="switchTab('agenda')">
+            <div class="stat-icon-wrapper bg-terracotta-light text-terracotta">
+              <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Total Arsip Terdaftar</span>
+              <h3 class="stat-number" id="homeTotalLetters">148</h3>
+              <span class="stat-meta text-success"><i class="fa-solid fa-arrow-up"></i> +12 arsip bulan ini</span>
+            </div>
+          </div>
+
+          <div class="stat-card" onclick="switchTab('statistik')">
+            <div class="stat-icon-wrapper bg-sage-light text-sage">
+              <i class="fa-solid fa-inbox"></i>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Surat Masuk (Total)</span>
+              <h3 class="stat-number" id="homeIncomingLetters">86</h3>
+              <span class="stat-meta text-muted">Korespondensi eksternal & vendor</span>
+            </div>
+          </div>
+
+          <div class="stat-card" onclick="switchTab('statistik')">
+            <div class="stat-icon-wrapper bg-ochre-light text-ochre">
+              <i class="fa-solid fa-paper-plane"></i>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Surat Keluar (Total)</span>
+              <h3 class="stat-number" id="homeOutgoingLetters">62</h3>
+              <span class="stat-meta text-muted">Penawaran, PO, surat dinas</span>
+            </div>
+          </div>
+
+          <div class="stat-card" onclick="switchTab('ulasan')">
+            <div class="stat-icon-wrapper bg-sand-light text-espresso">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Skor Kepuasan Publik</span>
+              <h3 class="stat-number" id="homeSatisfactionScore">4.9 / 5.0</h3>
+              <span class="stat-meta text-terracotta" id="homeReviewCount">Berdasarkan 38 ulasan anonim</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Core Features Grid -->
+      <section class="section-container">
+        <div class="section-header-compact">
+          <h2 class="section-heading">Fitur Unggulan Kearsipan Digital</h2>
+          <span class="section-tagline">Dirancang khusus untuk efisiensi dan keamanan administrasi PT Bumi Stationery</span>
+        </div>
+        <div class="feature-cards-grid">
+          <div class="feature-card" onclick="switchTab('agenda')">
+            <div class="feature-card-icon"><i class="fa-solid fa-book-bookmark"></i></div>
+            <h3 class="feature-card-title">Buku Agenda Surat Cerdas</h3>
+            <p class="feature-card-desc">Cari dan lacak seluruh nomor surat masuk, surat keluar, nomor agenda, pengirim, serta perihal surat dalam hitungan detik.</p>
+            <span class="feature-link">Buka Agenda <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+
+          <div class="feature-card" onclick="switchTab('abjad')">
+            <div class="feature-card-icon"><i class="fa-solid fa-folder-tree"></i></div>
+            <h3 class="feature-card-title">Abjad Filing System</h3>
+            <p class="feature-card-desc">Pengelompokan sistematis standar arsip nasional (Guide A-Z, nama koresponden, dan seri berkas) mempermudah temu balik arsip.</p>
+            <span class="feature-link">Buka Abjad Tree <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+
+          <div class="feature-card" onclick="switchTab('template')">
+            <div class="feature-card-icon"><i class="fa-solid fa-file-signature"></i></div>
+            <h3 class="feature-card-title">Template Surat Digital</h3>
+            <p class="feature-card-desc">Dilengkapi Kop Surat resmi PT BUMI STATIONERY. Buat surat penawaran, pesanan, tugas, dan kemitraan lalu cetak atau simpan ke arsip.</p>
+            <span class="feature-link">Pilih Template <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+
+          <div class="feature-card" onclick="switchTab('retensi')">
+            <div class="feature-card-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <h3 class="feature-card-title">Jadwal Retensi & Backup</h3>
+            <p class="feature-card-desc">Ketahui kapan dokumen aktif beralih ke inaktif atau siap dimusnahkan. Dilengkapi tombol pencadangan instan dan pemulihan data.</p>
+            <span class="feature-link">Kelola Retensi <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+
+          <div class="feature-card" onclick="switchTab('dokumentasi')">
+            <div class="feature-card-icon"><i class="fa-solid fa-photo-film"></i></div>
+            <h3 class="feature-card-title">Dokumentasi Arsip Kegiatan</h3>
+            <p class="feature-card-desc">Galeri multimedia kegiatan perusahaan, pameran alat tulis kantor, CSR sekolah pelosok, pelatihan sertifikasi, dan rapat kerja.</p>
+            <span class="feature-link">Lihat Dokumentasi <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+
+          <div class="feature-card" onclick="openAuthModal()">
+            <div class="feature-card-icon"><i class="fa-solid fa-user-shield"></i></div>
+            <h3 class="feature-card-title">Kontrol Hak Akses (RBAC)</h3>
+            <p class="feature-card-desc">Pemisahan akun Pengunjung, Staf, dan Admin. Lindungi kerahasiaan dokumen penting perusahaan dari pihak luar.</p>
+            <span class="feature-link">Atur Akses <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Company Profile & Archival Guidelines Section -->
+      <section class="section-container company-info-section">
+        <div class="info-banner-earth">
+          <div class="info-content-col">
+            <span class="tag-earth">Tentang Perusahaan</span>
+            <h2 class="info-title">Melayani Kebutuhan Kertas & Alat Tulis Berkualitas Sejak 1998</h2>
+            <p class="info-desc">
+              <strong>PT BUMI STATIONERY</strong> adalah mitra terpercaya pengadaan peralatan kearsipan, kertas fotokopi, alat tulis kantor (ATK), dan perlengkapan sekolah di Indonesia. Untuk menjaga akuntabilitas dan efisiensi birokrasi, sistem digitalisasi arsip ini diterapkan guna mendokumentasikan setiap korespondensi legal, operasional, dan kemitraan secara terstandar.
+            </p>
+            <div class="info-points">
+              <div class="point-item">
+                <i class="fa-solid fa-circle-check text-sage"></i>
+                <span>Sistem penyimpanan terpadu On-Premise Server & Cloud Terenkripsi</span>
+              </div>
+              <div class="point-item">
+                <i class="fa-solid fa-circle-check text-sage"></i>
+                <span>Pencadangan rutin berkala menjaga ketahanan data terhadap risiko bencana</span>
+              </div>
+              <div class="point-item">
+                <i class="fa-solid fa-circle-check text-sage"></i>
+                <span>Layanan Customer Service terbuka bagi publik dan mitra kerja sama</span>
+              </div>
+            </div>
+          </div>
+          <div class="info-quick-contact">
+            <h3 class="quick-contact-title"><i class="fa-solid fa-building"></i> Kontak Resmi Kearsipan</h3>
+            <p class="contact-line"><strong>Perusahaan:</strong> PT BUMI STATIONERY</p>
+            <p class="contact-line"><strong>Alamat:</strong> Jl. Bahtera No. 114 Blok L, Semarang, Jawa Tengah, Indonesia</p>
+            <p class="contact-line"><strong>Email Layanan:</strong> justforexampleyea@gmail.com</p>
+            <p class="contact-line"><strong>Telepon:</strong> Telp. (0553) 756685</p>
+            <p class="contact-line"><strong>Jam Operasional:</strong> Senin – Jumat (08:00 – 17:00 WIB)</p>
+            <button class="btn btn-primary mt-3 w-100" onclick="switchTab('kontak')">
+              <i class="fa-solid fa-headset"></i> Kirim Pesan / Pengaduan
+            </button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ==================== TAB 2: BUKU AGENDA SURAT ==================== -->
+    <section class="tab-pane" id="pane-agenda">
+      <div class="section-container">
+        <!-- Section Header with Actions -->
+        <div class="section-header-row">
+          <div>
+            <h2 class="section-heading">Buku Agenda Surat</h2>
+            <p class="section-tagline">Daftar inventaris, pencarian, dan temu kembali arsip surat masuk dan keluar</p>
+          </div>
+          <div class="action-buttons-group">
+            <button class="btn btn-outline" onclick="openBatchUploadModal()">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Upload Banyak File
+            </button>
+            <button class="btn btn-outline" onclick="exportLettersToCSV()">
+              <i class="fa-solid fa-file-excel"></i> Ekspor Excel/CSV
+            </button>
+            <button class="btn btn-outline" onclick="window.print()">
+              <i class="fa-solid fa-print"></i> Cetak Laporan
+            </button>
+            <button class="btn btn-primary" onclick="openAddLetterModal()">
+              <i class="fa-solid fa-plus"></i> Tambah Arsip Baru
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="toolbar-card">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="agendaSearchInput" class="form-control search-input" placeholder="Cari nomor surat, pengirim, penerima, atau perihal..." oninput="handleAgendaSearch()">
+            <button class="btn-clear-search" id="clearSearchBtn" onclick="clearAgendaSearch()" title="Bersihkan pencarian">&times;</button>
+          </div>
+
+          <div class="filters-row">
+            <div class="filter-group">
+              <label for="filterJenis"><i class="fa-solid fa-filter"></i> Jenis Surat:</label>
+              <select id="filterJenis" class="form-select" onchange="applyAgendaFilters()">
+                <option value="semua">Semua Jenis</option>
+                <option value="Surat Masuk">Surat Masuk</option>
+                <option value="Surat Keluar">Surat Keluar</option>
+                <option value="Surat Keputusan">Surat Keputusan (SK)</option>
+                <option value="Perjanjian Kerja Sama">Perjanjian / Kontrak</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filterAbjad"><i class="fa-solid fa-arrow-down-a-z"></i> Indeks Abjad:</label>
+              <select id="filterAbjad" class="form-select" onchange="applyAgendaFilters()">
+                <option value="semua">Semua Huruf (A - Z)</option>
+                <!-- Populated dynamically via JS: A through Z -->
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filterStatus"><i class="fa-solid fa-shield"></i> Status Retensi:</label>
+              <select id="filterStatus" class="form-select" onchange="applyAgendaFilters()">
+                <option value="semua">Semua Status</option>
+                <option value="Aktif">Aktif</option>
+                <option value="Inaktif">Inaktif</option>
+                <option value="Permanen">Permanen</option>
+                <option value="Siap Musnah">Siap Musnah</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filterTahun"><i class="fa-solid fa-calendar"></i> Tahun:</label>
+              <select id="filterTahun" class="form-select" onchange="applyAgendaFilters()">
+                <option value="semua">Semua Tahun</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+              </select>
+            </div>
+
+            <button class="btn btn-sm btn-outline-terracotta" onclick="resetAgendaFilters()">
+              <i class="fa-solid fa-rotate-left"></i> Reset Filter
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Count Pill -->
+        <div class="filter-status-row">
+          <span>Menampilkan <strong id="agendaFilteredCount">0</strong> arsip surat dari total <strong id="agendaTotalCount">0</strong> dokumen.</span>
+          <span class="access-notice-chip" id="accessNoticeText"><i class="fa-solid fa-circle-info"></i> Mode Pengunjung Tamu: Anda dapat melihat metadata. Klik 'Pratinjau' untuk melihat isi arsip (perlu login).</span>
+        </div>
+
+        <!-- Letters Table for Desktop & Cards for Mobile -->
+        <div class="table-responsive-wrapper">
+          <table class="custom-table" id="agendaTable">
+            <thead>
+              <tr>
+                <th style="width: 50px;">No.</th>
+                <th>Kode Abjad</th>
+                <th>Nomor Surat</th>
+                <th>Tanggal</th>
+                <th>Jenis</th>
+                <th>Pengirim / Instansi</th>
+                <th>Penerima / Ditujukan</th>
+                <th>Perihal</th>
+                <th>Status Retensi</th>
+                <th style="width: 140px; text-align: center;">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="agendaTableBody">
+              <!-- Dynamically populated by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State (if no letters match filter) -->
+        <div class="empty-state d-none" id="agendaEmptyState">
+          <i class="fa-solid fa-folder-open empty-icon"></i>
+          <h3>Arsip Tidak Ditemukan</h3>
+          <p>Tidak ada arsip surat yang sesuai dengan kata kunci atau filter yang Anda pilih.</p>
+          <button class="btn btn-secondary mt-2" onclick="resetAgendaFilters()">Kembalikan Semua Data</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: CATATAN SURAT MASUK & KELUAR (STATISTIK) ==================== -->
+    <section class="tab-pane" id="pane-statistik">
+      <div class="section-container">
+        <div class="section-header-row">
+          <div>
+            <h2 class="section-heading">Catatan Data Surat Masuk & Surat Keluar</h2>
+            <p class="section-tagline">Visualisasi rekapitulasi data lalu lintas korespondensi resmi PT BUMI STATIONERY</p>
+          </div>
+          <div class="action-buttons-group">
+            <button class="btn btn-outline" onclick="exportMonthlyReportCSV()">
+              <i class="fa-solid fa-file-csv"></i> Unduh Rekap Bulanan (CSV)
+            </button>
+            <button class="btn btn-primary" onclick="window.print()">
+              <i class="fa-solid fa-print"></i> Cetak Rekapitulasi
+            </button>
+          </div>
+        </div>
+
+        <!-- Summary Metric Cards -->
+        <div class="stats-grid mb-4">
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-sage-light text-sage"><i class="fa-solid fa-arrow-down-wide-short"></i></div>
+            <div class="stat-content">
+              <span class="stat-label">Total Surat Masuk Diterima</span>
+              <h3 class="stat-number text-sage" id="statIncomingTotal">86</h3>
+              <span class="stat-meta">Surat dinas, penawaran vendor, berkas pajak</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-terracotta-light text-terracotta"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+            <div class="stat-content">
+              <span class="stat-label">Total Surat Keluar Dikirim</span>
+              <h3 class="stat-number text-terracotta" id="statOutgoingTotal">62</h3>
+              <span class="stat-meta">Surat penawaran, pesanan stok, tagihan</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-ochre-light text-ochre"><i class="fa-solid fa-scale-balanced"></i></div>
+            <div class="stat-content">
+              <span class="stat-label">Rasio Arus Surat (Masuk : Keluar)</span>
+              <h3 class="stat-number text-ochre" id="statRatio">1.39 : 1</h3>
+              <span class="stat-meta">Lalu lintas surat masuk mendominasi 58%</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-sand-light text-espresso"><i class="fa-solid fa-calendar-check"></i></div>
+            <div class="stat-content">
+              <span class="stat-label">Bulan Terpadat</span>
+              <h3 class="stat-number text-espresso">Oktober 2026</h3>
+              <span class="stat-meta text-success"><i class="fa-solid fa-circle-arrow-up"></i> 34 surat terproses</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Visual Chart & Monthly Breakdown -->
+        <div class="analytics-layout-grid">
+          <!-- Monthly Traffic Chart (Canvas Native High-Performance) -->
+          <div class="analytics-chart-card">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Grafik Perbandingan Arus Surat Bulanan (Tahun 2026)</h3>
+                <p class="chart-subtitle">Frekuensi surat yang diterima versus dikirim oleh PT Bumi Stationery per bulan</p>
+              </div>
+              <div class="chart-legend">
+                <span class="legend-item"><span class="legend-color bg-sage"></span> Surat Masuk</span>
+                <span class="legend-item"><span class="legend-color bg-terracotta"></span> Surat Keluar</span>
+              </div>
+            </div>
+            <div class="canvas-container">
+              <canvas id="monthlyTrafficChart" width="800" height="340" role="img" aria-label="Grafik Surat Masuk dan Keluar"></canvas>
+            </div>
+          </div>
+
+          <!-- Category Breakdown Card -->
+          <div class="category-breakdown-card">
+            <h3 class="chart-title">Distribusi Kategori Dokumen</h3>
+            <p class="chart-subtitle">Pengelompokan berdasarkan kepentingan berkas</p>
+            <div class="category-bars-list" id="categoryBarsList">
+              <!-- Dynamically populated by JS -->
+            </div>
+            
+            <div class="archival-notice-box mt-3">
+              <div class="notice-icon"><i class="fa-solid fa-lightbulb"></i></div>
+              <div class="notice-text">
+                <strong>Catatan Tata Kelola Kearsipan:</strong>
+                Surat penawaran barang dan faktur pajak mendominasi surat masuk, sedangkan surat pesanan (PO) mendominasi surat keluar.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monthly Recapitulation Table -->
+        <div class="mt-4">
+          <div class="card-header-styled">
+            <h3 class="card-title-styled"><i class="fa-solid fa-table-list"></i> Tabel Rekapitulasi Surat Bulanan (Januari - Oktober 2026)</h3>
+          </div>
+          <div class="table-responsive-wrapper">
+            <table class="custom-table" id="rekapTable">
+              <thead>
+                <tr>
+                  <th>Periode Bulan</th>
+                  <th>Surat Masuk Diterima</th>
+                  <th>Surat Keluar Dikirim</th>
+                  <th>Total Surat</th>
+                  <th>Persentase Masuk</th>
+                  <th>Keterangan Operasional</th>
+                </tr>
+              </thead>
+              <tbody id="rekapTableBody">
+                <!-- Dynamically populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: ABJAD FILING SYSTEM ==================== -->
+    <section class="tab-pane" id="pane-abjad">
+      <div class="section-container">
+        <div class="section-header-row">
+          <div>
+            <h2 class="section-heading">Sistem Penyimpanan Arsip Abjad (Alphabetical Filing)</h2>
+            <p class="section-tagline">Standarisasi penataan berkas berdasarkan abjad nama koresponden, instansi, dan badan usaha</p>
+          </div>
+          <div class="action-buttons-group">
+            <button class="btn btn-outline" onclick="openArchivalRulesModal()">
+              <i class="fa-solid fa-circle-question"></i> Pedoman Abjad Filing
+            </button>
+            <button class="btn btn-primary" onclick="openAddLetterModal()">
+              <i class="fa-solid fa-folder-plus"></i> Tambah Berkas ke Abjad
+            </button>
+          </div>
+        </div>
+
+        <!-- Standard Archival Rule Notice -->
+        <div class="filing-guide-banner">
+          <div class="guide-banner-icon"><i class="fa-solid fa-spell-check"></i></div>
+          <div class="guide-banner-content">
+            <h4>Prinsip Penyimpanan Abjad PT BUMI STATIONERY</h4>
+            <p>
+              Mengikuti kaidah <strong>ANRI (Arsip Nasional Republik Indonesia)</strong>: Kata tangkap nama organisasi/perusahaan diindeks dengan mengabaikan singkatan badan hukum (PT, CV, UD) sebagai unit pertama. <em>Contoh: PT Berkah Grafika Mandiri diindeks pada folder <strong>[B] - Berkah Grafika Mandiri, PT</strong>.</em>
+            </p>
+          </div>
+        </div>
+
+        <!-- Alphabet Bar Index (A to Z) -->
+        <div class="alphabet-nav-bar" id="alphabetNavBar">
+          <!-- Generated dynamically from A to Z -->
+        </div>
+
+        <!-- Hierarchical Tree / Explorer View -->
+        <div class="abjad-explorer-layout">
+          <!-- Folder Sidebar (Hierarchical) -->
+          <div class="abjad-folder-tree">
+            <div class="tree-header">
+              <span><i class="fa-solid fa-folder-tree"></i> Panduan Guide Primer & Sekunder</span>
+              <span class="badge badge-accent" id="activeGuideBadge">Semua Folder</span>
+            </div>
+            <div class="tree-body" id="abjadTreeContainer">
+              <!-- Dynamically populated folders and sub-drawers -->
+            </div>
+          </div>
+
+          <!-- Folder Contents / Document Files List -->
+          <div class="abjad-file-viewer">
+            <div class="viewer-header">
+              <div>
+                <h3 class="viewer-title" id="abjadCurrentFolderTitle"><i class="fa-solid fa-folder-open text-terracotta"></i> Berkas Arsip: Abjad [Semua]</h3>
+                <p class="viewer-subtitle" id="abjadCurrentFolderSubtitle">Menampilkan seluruh arsip yang diklasifikasikan menurut huruf abjad utama</p>
+              </div>
+              <div class="viewer-stats">
+                <span class="badge badge-sage" id="abjadFolderCountBadge">0 Berkas</span>
+              </div>
+            </div>
+
+            <!-- Documents in Selected Folder -->
+            <div class="abjad-cards-grid" id="abjadFilesGrid">
+              <!-- Dynamically populated files -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: TEMPLATE SURAT DIGITAL ==================== -->
+    <section class="tab-pane" id="pane-template">
+      <div class="section-container">
+        <div class="section-header-row">
+          <div>
+            <h2 class="section-heading">Template Surat Digital Perusahaan</h2>
+            <p class="section-tagline">Pembuatan surat resmi digital lengkap dengan Kop Surat PT BUMI STATIONERY</p>
+          </div>
+          <div class="action-buttons-group">
+            <button class="btn btn-outline" onclick="resetLetterForm()">
+              <i class="fa-solid fa-rotate-left"></i> Reset Form
+            </button>
+            <button class="btn btn-primary" onclick="printLetterPreview()">
+              <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
+            </button>
+            <button class="btn btn-terracotta" onclick="saveTemplateToAgenda()">
+              <i class="fa-solid fa-box-archive"></i> Arsipkan ke Agenda
+            </button>
+          </div>
+        </div>
+
+        <div class="template-generator-grid">
+          <!-- Left Column: Template Selection & Inputs -->
+          <div class="template-form-card">
+            <div class="card-section-title">
+              <i class="fa-solid fa-sliders"></i>
+              <span>Pilih Jenis & Isi Data Surat</span>
+            </div>
+
+            <!-- Preset Template Buttons -->
+            <div class="mb-3">
+              <label class="form-label-bold">Pilih Format Template:</label>
+              <div class="template-presets-list" id="templatePresetsList">
+                <button class="btn-preset active" onclick="loadTemplatePreset('penawaran')">
+                  <i class="fa-solid fa-tag"></i> Surat Penawaran Produk
+                </button>
+                <button class="btn-preset" onclick="loadTemplatePreset('pesanan')">
+                  <i class="fa-solid fa-cart-shopping"></i> Surat Pesanan (PO)
+                </button>
+                <button class="btn-preset" onclick="loadTemplatePreset('perjanjian')">
+                  <i class="fa-solid fa-handshake"></i> Perjanjian Kerjasama
+                </button>
+                <button class="btn-preset" onclick="loadTemplatePreset('undangan')">
+                  <i class="fa-solid fa-envelope-open-text"></i> Undangan Rapat Evaluasi
+                </button>
+                <button class="btn-preset" onclick="loadTemplatePreset('tugas')">
+                  <i class="fa-solid fa-briefcase"></i> Surat Tugas Dinas
+                </button>
+                <button class="btn-preset" onclick="loadTemplatePreset('keterangan')">
+                  <i class="fa-solid fa-id-card"></i> Keterangan Kerja Staf
+                </button>
+              </div>
+            </div>
+
+            <form id="letterGeneratorForm" onsubmit="event.preventDefault(); updateLiveLetterPreview();">
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="tplNomorSurat">Nomor Surat Resmi:</label>
+                  <input type="text" id="tplNomorSurat" class="form-control" value="089/BS-PNT/X/2026" oninput="updateLiveLetterPreview()">
+                </div>
+                <div class="form-group">
+                  <label for="tplTanggalSurat">Tanggal Surat:</label>
+                  <input type="date" id="tplTanggalSurat" class="form-control" onchange="updateLiveLetterPreview()">
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="tplLampiran">Lampiran:</label>
+                  <input type="text" id="tplLampiran" class="form-control" value="1 (Satu) Berkas Katalog & Daftar Harga" oninput="updateLiveLetterPreview()">
+                </div>
+                <div class="form-group">
+                  <label for="tplPerihal">Perihal / Hal:</label>
+                  <input type="text" id="tplPerihal" class="form-control" value="Penawaran Pengadaan Kertas HVS & ATK Kantor" oninput="updateLiveLetterPreview()">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="tplTujuanNama">Nama Penerima / Pejabat:</label>
+                <input type="text" id="tplTujuanNama" class="form-control" value="Yth. Manajer Pengadaan & Logistik" oninput="updateLiveLetterPreview()">
+              </div>
+
+              <div class="form-group">
+                <label for="tplTujuanInstansi">Instansi / Perusahaan Tujuan:</label>
+                <input type="text" id="tplTujuanInstansi" class="form-control" value="PT Graha Mandiri Nusantara" oninput="updateLiveLetterPreview()">
+              </div>
+
+              <div class="form-group">
+                <label for="tplTujuanAlamat">Alamat Tujuan:</label>
+                <input type="text" id="tplTujuanAlamat" class="form-control" value="Jl. Sudirman Kav. 28, Jakarta Pusat" oninput="updateLiveLetterPreview()">
+              </div>
+
+              <div class="form-group">
+                <label for="tplIsiSurat">Isi Paragraf Surat:</label>
+                <textarea id="tplIsiSurat" rows="8" class="form-control" oninput="updateLiveLetterPreview()"></textarea>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="tplPenandatanganNama">Nama Penandatangan:</label>
+                  <input type="text" id="tplPenandatanganNama" class="form-control" value="H. Bambang Hartono, S.E." oninput="updateLiveLetterPreview()">
+                </div>
+                <div class="form-group">
+                  <label for="tplPenandatanganJabatan">Jabatan:</label>
+                  <input type="text" id="tplPenandatanganJabatan" class="form-control" value="Direktur Utama PT Bumi Stationery" oninput="updateLiveLetterPreview()">
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right Column: Live Letter Paper Preview with Authentic Kop Surat -->
+          <div class="template-preview-card">
+            <div class="preview-card-topbar">
+              <span><i class="fa-solid fa-file-lines"></i> Pratinjau Kertas Kop Surat Resmi (A4)</span>
+              <div class="preview-actions">
+                <button class="btn btn-sm btn-outline" onclick="copyLetterText()"><i class="fa-solid fa-copy"></i> Salin Teks</button>
+                <button class="btn btn-sm btn-primary" onclick="printLetterPreview()"><i class="fa-solid fa-print"></i> Cetak</button>
+              </div>
+            </div>
+
+            <!-- Letter Paper Container -->
+            <div class="letter-paper-wrapper" id="printableLetterPaper">
+              <!-- Official Kop Surat PT BUMI STATIONERY -->
+              <div class="kop-surat">
+                <div class="kop-logo-box">
+                  <div class="kop-logo-circle">
+                    <img src="logo.png" alt="Logo PT BUMI STATIONERY">
+                  </div>
+                </div>
+                <div class="kop-text-box">
+                  <h2 class="kop-company-name">PT BUMI STATIONERY</h2>
+                  <p class="kop-subline">DISTRIBUTOR ALAT TULIS KANTOR, KERTAS KONTINU, DAN SISTEM KEARSIPAN MODERN</p>
+                  <p class="kop-address">
+                    Jl. Bahtera No. 114 Blok L, Semarang, Jawa Tengah, Indonesia<br>
+                    Telepon: (0553) 756685 | Website: www.bumistationery.co.id | Email: justforexampleyea@gmail.com
+                  </p>
+                </div>
+              </div>
+              <div class="kop-divider-double"></div>
+
+              <!-- Metadata Surat -->
+              <div class="letter-meta-grid">
+                <div class="meta-left">
+                  <p><strong>Nomor</strong> : <span id="prevNomor">089/BS-PNT/X/2026</span></p>
+                  <p><strong>Lampiran</strong> : <span id="prevLampiran">1 (Satu) Berkas Katalog & Daftar Harga</span></p>
+                  <p><strong>Perihal</strong> : <u><span id="prevPerihal">Penawaran Pengadaan Kertas HVS & ATK Kantor</span></u></p>
+                </div>
+                <div class="meta-right">
+                  <p>Semarang, <span id="prevTanggal">17 Oktober 2026</span></p>
+                </div>
+              </div>
+
+              <!-- Recipient -->
+              <div class="letter-recipient-box">
+                <p>Kepada Yth.</p>
+                <p><strong><span id="prevTujuanNama">Yth. Manajer Pengadaan & Logistik</span></strong></p>
+                <p><strong><span id="prevTujuanInstansi">PT Graha Mandiri Nusantara</span></strong></p>
+                <p><span id="prevTujuanAlamat">Jl. Sudirman Kav. 28, Jakarta Pusat</span></p>
+              </div>
+
+              <!-- Body Content -->
+              <div class="letter-body-content" id="prevIsiSurat">
+                <!-- Dynamically populated text with paragraphs -->
+              </div>
+
+              <!-- Signature Area with Official Stamp Simulation -->
+              <div class="letter-signature-area">
+                <div class="sig-box">
+                  <p>Hormat kami,</p>
+                  <p><strong>PT BUMI STATIONERY</strong></p>
+                  <div class="sig-space">
+                    <div class="digital-stamp">
+                      <i class="fa-solid fa-stamp"></i>
+                      <span>TERVALIDASI DIGITAL<br>PT BUMI STATIONERY</span>
+                    </div>
+                  </div>
+                  <p class="sig-name"><strong><u id="prevPenandatanganNama">H. Bambang Hartono, S.E.</u></strong></p>
+                  <p class="sig-title" id="prevPenandatanganJabatan">Direktur Utama</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 6: DOKUMENTASI KEGIATAN (FOTO & VIDEO) ==================== -->
+    <section class="tab-pane" id="pane-dokumentasi">
+      <div class="section-container">
+        <div class="section-header-row">
+          <div>
+            <h2 class="section-heading">Arsip Dokumentasi Kegiatan Perusahaan</h2>
+            <p class="section-tagline">Galeri visual foto dan video arsip kegiatan operasional, pameran, CSR, dan pelatihan PT BUMI STATIONERY</p>
+          </div>
+          <div class="action-buttons-group">
+            <button class="btn btn-primary" onclick="openAddDocumentationModal()">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Tambah Dokumentasi Baru
+            </button>
+          </div>
+        </div>
+
+        <!-- Documentation Category Filter -->
+        <div class="doc-filter-bar">
+          <button class="doc-filter-btn active" data-cat="semua" onclick="filterDocumentation('semua')">Semua Media</button>
+          <button class="doc-filter-btn" data-cat="foto" onclick="filterDocumentation('foto')"><i class="fa-solid fa-image"></i> Foto Kegiatan</button>
+          <button class="doc-filter-btn" data-cat="video" onclick="filterDocumentation('video')"><i class="fa-solid fa-video"></i> Video Arsip</button>
+          <button class="doc-filter-btn" data-cat="csr" onclick="filterDocumentation('csr')"><i class="fa-solid fa-heart"></i> CSR & Komunitas</button>
+          <button class="doc-filter-btn" data-cat="pameran" onclick="filterDocumentation('pameran')"><i class="fa-solid fa-store"></i> Pameran & Expo</button>
+          <button class="doc-filter-btn" data-cat="pelatihan" onclick="filterDocumentation('pelatihan')"><i class="fa-solid fa-graduation-cap"></i> Pelatihan Kearsipan</button>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="doc-gallery-grid" id="docGalleryGrid">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 7: JADWAL RETENSI & PENCADANGAN (BACKUP) ==================== -->
+    <section class="tab-pane" id="pane-retensi">
+      <div class="section-container">
+        <div class="section-header-row">
+          <div>
+            <h2 class="section-heading">Pencadangan (Backup) & Jadwal Retensi Arsip (JRA)</h2>
+            <p class="section-tagline">Perlindungan data dari kerusakan perangkat serta manajemen daur hidup dokumen sesuai regulasi</p>
+          </div>
+          <div class="action-buttons-group">
+            <button class="btn btn-outline" onclick="triggerRestoreInput()">
+              <i class="fa-solid fa-upload"></i> Pulihkan Data (Restore JSON)
+            </button>
+            <input type="file" id="restoreFileInput" accept=".json" style="display: none;" onchange="handleRestoreFile(event)">
+            <button class="btn btn-primary" onclick="downloadBackupJSON()">
+              <i class="fa-solid fa-download"></i> Cadangkan Sekarang (Backup JSON)
+            </button>
+          </div>
+        </div>
+
+        <!-- Storage & Cloud Integration Cards -->
+        <div class="storage-integration-row">
+          <!-- Local Storage Node -->
+          <div class="storage-node-card">
+            <div class="node-icon bg-terracotta-light text-terracotta">
+              <i class="fa-solid fa-hard-drive"></i>
+            </div>
+            <div class="node-details">
+              <span class="node-label">Penyimpanan Server Lokal (On-Premise NAS)</span>
+              <h4 class="node-status text-sage"><i class="fa-solid fa-circle-check"></i> Aktif & Terlindungi</h4>
+              <p class="node-meta">Pusat Data Gedung Bumi Stationery, Melawai, Lt. 3. Kapasitas 1 TB (Terpakai 34.2%). Enkripsi RAID-5.</p>
+            </div>
+            <button class="btn btn-sm btn-outline" onclick="simulateStoragePing('lokal')">Uji Koneksi</button>
+          </div>
+
+          <!-- Cloud Storage Mirror (AWS S3) -->
+          <div class="storage-node-card">
+            <div class="node-icon bg-sage-light text-sage">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+            <div class="node-details">
+              <span class="node-label">Penyimpanan Terpusat Cloud Mirror (AWS S3 Jakarta)</span>
+              <h4 class="node-status text-sage"><i class="fa-solid fa-arrows-rotate"></i> Sinkronisasi Otomatis Tiap 6 Jam</h4>
+              <p class="node-meta">Bucket: <code>bumi-stationery-archive-vault</code> • Wilayah ap-southeast-3 • TLS 1.3 & AES-256.</p>
+            </div>
+            <button class="btn btn-sm btn-outline" onclick="simulateStoragePing('cloud')">Cek Sinkron</button>
+          </div>
+        </div>
+
+        <!-- Retention Schedule (JRA) Rules Table -->
+        <div class="card-styled mt-4">
+          <div class="card-header-styled">
+            <div>
+              <h3 class="card-title-styled"><i class="fa-solid fa-calendar-days"></i> Matriks Jadwal Retensi Arsip (JRA) PT Bumi Stationery</h3>
+              <p class="card-subtitle-styled">Pedoman penentuan masa simpan aktif, inaktif, dan nasib akhir dokumen berdasarkan standar kearsipan</p>
+            </div>
+            <button class="btn btn-sm btn-outline-terracotta" onclick="openAddRetentionRuleModal()">
+              <i class="fa-solid fa-plus"></i> Tambah Aturan JRA
+            </button>
+          </div>
+
+          <div class="table-responsive-wrapper">
+            <table class="custom-table" id="retentionRulesTable">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Seri / Jenis Dokumen</th>
+                  <th>Masa Aktif</th>
+                  <th>Masa Inaktif</th>
+                  <th>Nasib Akhir Dokumen</th>
+                  <th>Keterangan Hukum / Regulasi</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="retentionRulesBody">
+                <!-- Dynamically populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Retention Countdown & Appraisal List -->
+        <div class="card-styled mt-4">
+          <div class="card-header-styled">
+            <div>
+              <h3 class="card-title-styled"><i class="fa-solid fa-hourglass-half"></i> Arsip Mendekati Batas Retensi & Rekomendasi Pemusnahan</h3>
+              <p class="card-subtitle-styled">Arsip yang perlu dinilai kembali, dialihkan ke inaktif, atau dimusnahkan secara legal</p>
+            </div>
+            <button class="btn btn-sm btn-outline" onclick="exportAppraisalReport()">
+              <i class="fa-solid fa-file-pdf"></i> Cetak Berita Acara
+            </button>
+          </div>
+
+          <div class="table-responsive-wrapper">
+            <table class="custom-table" id="retentionAlertTable">
+              <thead>
+                <tr>
+                  <th>Nomor Surat</th>
+                  <th>Perihal</th>
+                  <th>Tahun Arsip</th>
+                  <th>Masa Simpan Habis</th>
+                  <th>Status Saat Ini</th>
+                  <th>Rekomendasi Tindakan</th>
+                  <th>Tindakan Admin</th>
+                </tr>
+              </thead>
+              <tbody id="retentionAlertBody">
+                <!-- Dynamically populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Backup Logs History -->
+        <div class="card-styled mt-4">
+          <div class="card-header-styled">
+            <h3 class="card-title-styled"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pencadangan Otomatis & Log Integritas</h3>
+          </div>
+          <div class="backup-log-list" id="backupLogList">
+            <!-- Dynamically populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 8: PENILAIAN TERHADAP PERUSAHAAN (REVIEW ANONIM) ==================== -->
+    <section class="tab-pane" id="pane-ulasan">
+      <div class="section-container">
+        <div class="section-header-row">
+          <div>
+            <h2 class="section-heading">Penilaian Terhadap Perusahaan (Reviewer Anonim)</h2>
+            <p class="section-tagline">Sampaikan apresiasi, kritik, atau saran untuk kemajuan tata kelola dan layanan PT BUMI STATIONERY secara anonim</p>
+          </div>
+        </div>
+
+        <div class="review-page-grid">
+          <!-- Left: Submit Review Form -->
+          <div class="review-form-card">
+            <div class="card-section-title">
+              <i class="fa-solid fa-pen-fancy"></i>
+              <span>Tulis Penilaian Anda</span>
+            </div>
+            <p class="text-muted text-sm mb-3">
+              <i class="fa-solid fa-user-secret"></i> <strong>Jaminan Privasi:</strong> Identitas Anda tidak akan ditampilkan ke publik. Reviewer akan dicatat secara anonim (contoh: <em>Pengunjung Anonim #8241</em>).
+            </p>
+
+            <form id="reviewSubmitForm" onsubmit="handleReviewSubmit(event)">
+              <!-- Interactive Star Rating -->
+              <div class="form-group">
+                <label class="form-label-bold">Beri Bintang Kepuasan:</label>
+                <div class="star-rating-picker" id="starRatingPicker">
+                  <i class="fa-solid fa-star star-btn active" data-rating="1" onclick="setStarRating(1)"></i>
+                  <i class="fa-solid fa-star star-btn active" data-rating="2" onclick="setStarRating(2)"></i>
+                  <i class="fa-solid fa-star star-btn active" data-rating="3" onclick="setStarRating(3)"></i>
+                  <i class="fa-solid fa-star star-btn active" data-rating="4" onclick="setStarRating(4)"></i>
+                  <i class="fa-solid fa-star star-btn active" data-rating="5" onclick="setStarRating(5)"></i>
+                  <span class="rating-label-text" id="ratingScoreText">5.0 (Sangat Puas)</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="reviewAspek">Aspek Yang Dinilai:</label>
+                <select id="reviewAspek" class="form-select" required>
+                  <option value="Kecepatan & Kemudahan Akses Arsip">Kecepatan & Kemudahan Akses Arsip</option>
+                  <option value="Kelengkapan Template & Dokumen">Kelengkapan Template & Dokumen</option>
+                  <option value="Keramahan & Respon Pelayanan CS">Keramahan & Respon Pelayanan CS</option>
+                  <option value="Kualitas Produk Alat Tulis & Kertas">Kualitas Produk Alat Tulis & Kertas</option>
+                  <option value="Keamanan & Ketepatan Sistem Kearsipan">Keamanan & Ketepatan Sistem Kearsipan</option>
+                  <option value="Lainnya">Lainnya / Umum</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="reviewKomentar">Ulasan & Masukan Anda:</label>
+                <textarea id="reviewKomentar" class="form-control" rows="5" placeholder="Tuliskan pengalaman Anda saat menggunakan web arsip atau berinteraksi dengan PT Bumi Stationery..." required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="reviewAgree" checked required>
+                  <span class="checkmark"></span>
+                  <span class="checkbox-label">Saya menyatakan ulasan ini objektif dan menyetujui ditampilkan secara anonim di halaman publik.</span>
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-terracotta w-100">
+                <i class="fa-solid fa-paper-plane"></i> Kirim Penilaian Anonim
+              </button>
+            </form>
+          </div>
+
+          <!-- Right: Aggregated Rating & Feed -->
+          <div class="review-feed-card">
+            <div class="rating-summary-box">
+              <div class="big-score-col">
+                <span class="big-score-number" id="avgRatingDisplay">4.9</span>
+                <div class="big-stars" id="bigStarsDisplay">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star-half-stroke"></i>
+                </div>
+                <span class="score-subtext">Dari total <strong id="totalReviewersDisplay">38</strong> ulasan anonim</span>
+              </div>
+
+              <!-- Bar breakdown -->
+              <div class="score-bars-col">
+                <div class="rating-bar-row">
+                  <span>5 ★</span>
+                  <div class="bar-track"><div class="bar-fill" style="width: 85%;"></div></div>
+                  <span>85%</span>
+                </div>
+                <div class="rating-bar-row">
+                  <span>4 ★</span>
+                  <div class="bar-track"><div class="bar-fill" style="width: 12%;"></div></div>
+                  <span>12%</span>
+                </div>
+                <div class="rating-bar-row">
+                  <span>3 ★</span>
+                  <div class="bar-track"><div class="bar-fill" style="width: 3%;"></div></div>
+                  <span>3%</span>
+                </div>
+                <div class="rating-bar-row">
+                  <span>2 ★</span>
+                  <div class="bar-track"><div class="bar-fill" style="width: 0%;"></div></div>
+                  <span>0%</span>
+                </div>
+                <div class="rating-bar-row">
+                  <span>1 ★</span>
+                  <div class="bar-track"><div class="bar-fill" style="width: 0%;"></div></div>
+                  <span>0%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- List of Reviews -->
+            <div class="reviews-list-container">
+              <h4 class="reviews-feed-heading"><i class="fa-solid fa-comments"></i> Ulasan Terbaru Pengunjung</h4>
+              <div class="reviews-list" id="reviewsList">
+                <!-- Dynamically populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 9: LAYANAN CS & PENGADUAN EMAIL ==================== -->
+    <section class="tab-pane" id="pane-kontak">
+      <div class="section-container">
+        <div class="section-header-row">
+          <div>
+            <h2 class="section-heading">Layanan Customer Service & Pengaduan Langsung</h2>
+            <p class="section-tagline">Terhubung langsung ke email resmi kearsipan PT BUMI STATIONERY untuk konsultasi, keluhan, dan permohonan arsip</p>
+          </div>
+        </div>
+
+        <div class="contact-page-layout">
+          <!-- Left: Contact Form -->
+          <div class="contact-form-card">
+            <div class="card-section-title">
+              <i class="fa-solid fa-envelope-open-text"></i>
+              <span>Formulir Pengaduan & Permintaan Arsip</span>
+            </div>
+            <p class="text-muted text-sm mb-3">
+              Setiap pesan yang Anda kirimkan akan diteruskan langsung ke sistem email kearsipan dan staf kami akan merespons dalam waktu maksimal <strong>1 x 24 jam kerja</strong>.
+            </p>
+
+            <form id="csContactForm" onsubmit="handleCSFormSubmit(event)">
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="csNama">Nama Lengkap Pengirim:</label>
+                  <input type="text" id="csNama" class="form-control" placeholder="Contoh: Rian Pratama" required>
+                </div>
+                <div class="form-group">
+                  <label for="csEmail">Email Anda:</label>
+                  <input type="email" id="csEmail" class="form-control" placeholder="nama@email.com" required>
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="csTelepon">Nomor WhatsApp / HP:</label>
+                  <input type="tel" id="csTelepon" class="form-control" placeholder="0812-xxxx-xxxx" required>
+                </div>
+                <div class="form-group">
+                  <label for="csKategori">Kategori Pengaduan / Urusan:</label>
+                  <select id="csKategori" class="form-select" required>
+                    <option value="Kendala Akses Dokumen">Kendala Akses Dokumen / Izin Buka Berkas</option>
+                    <option value="Permohonan Salinan Arsip Resmi">Permohonan Salinan Arsip Resmi</option>
+                    <option value="Pengadaan Kertas & ATK Perusahaan">Kerjasama Pengadaan Kertas & ATK</option>
+                    <option value="Klarifikasi Nomor Surat / Legalitas">Klarifikasi Nomor Surat / Legalitas</option>
+                    <option value="Pengaduan Pelayanan Umum">Pengaduan Pelayanan Umum</option>
+                    <option value="Lainnya">Lainnya</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="csSubjek">Subjek Pesan:</label>
+                <input type="text" id="csSubjek" class="form-control" placeholder="Ringkasan permasalahan..." required>
+              </div>
+
+              <div class="form-group">
+                <label for="csPesan">Detail Keluhan / Pesan:</label>
+                <textarea id="csPesan" rows="6" class="form-control" placeholder="Jelaskan kebutuhan atau kendala Anda secara detail agar tim kearsipan dapat segera menindaklanjuti..." required></textarea>
+              </div>
+
+              <div class="cs-actions-row">
+                <button type="submit" class="btn btn-terracotta">
+                  <i class="fa-solid fa-paper-plane"></i> Kirim Pesan ke Email Kearsipan
+                </button>
+                <button type="button" class="btn btn-outline" onclick="openDirectMailClient()">
+                  <i class="fa-solid fa-envelope"></i> Buka di Aplikasi Email
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right: Contact Information & Direct Channels -->
+          <div class="contact-info-cards-col">
+            <div class="info-card-earth">
+              <div class="info-card-head">
+                <i class="fa-solid fa-building-user text-terracotta"></i>
+                <h4>Unit Pengelola Arsip PT BUMI STATIONERY</h4>
+              </div>
+              <ul class="contact-details-list">
+                <li>
+                  <i class="fa-solid fa-envelope"></i>
+                  <div>
+                    <strong>Email Kearsipan & CS:</strong>
+                    <a href="mailto:justforexampleyea@gmail.com">justforexampleyea@gmail.com</a>
+                  </div>
+                </li>
+                <li>
+                  <i class="fa-solid fa-phone"></i>
+                  <div>
+                    <strong>Telepon Kantor:</strong>
+                    <span>(0553) 756685 (Hunting)</span>
+                  </div>
+                </li>
+                <li>
+                  <i class="fa-brands fa-whatsapp"></i>
+                  <div>
+                    <strong>WhatsApp Hotline CS:</strong>
+                    <a href="https://wa.me/6281234567890" target="_blank">+62 812-3456-7890 (Online)</a>
+                  </div>
+                </li>
+                <li>
+                  <i class="fa-solid fa-location-dot"></i>
+                  <div>
+                    <strong>Lokasi Kantor:</strong>
+                    <span>Jl. Bahtera No. 114 Blok L, Semarang, Jawa Tengah, Indonesia</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Ticket Dispatch Tracker Simulation -->
+            <div class="ticket-status-card">
+              <h4><i class="fa-solid fa-ticket"></i> Log Pengaduan Terbaru Terkirim</h4>
+              <div class="ticket-list-mini" id="csTicketMiniList">
+                <!-- Dynamically populated tickets -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-col-main">
+        <div class="footer-brand">
+          <img src="logo.png" alt="Logo PT BUMI STATIONERY" style="width: 38px; height: 38px; object-fit: contain; border-radius: 8px; background: white; padding: 2px;">
+          <span class="footer-company-name">PT BUMI STATIONERY</span>
+        </div>
+        <p class="footer-desc">
+          Penyedia perlengkapan kantor, kertas cetak, dan solusi tata kelola kearsipan digital modern. Beroperasi dengan integritas dan kepatuhan standar kearsipan nasional.
+        </p>
+        <p class="footer-address">
+          <i class="fa-solid fa-location-dot"></i> Jl. Bahtera No. 114 Blok L, Semarang, Jawa Tengah, Indonesia | Telp: (0553) 756685
+        </p>
+      </div>
+
+      <div class="footer-col-links">
+        <h4 class="footer-col-title">Navigasi Arsip</h4>
+        <ul>
+          <li><a href="#beranda" onclick="switchTab('beranda')">Beranda Utama</a></li>
+          <li><a href="#agenda" onclick="switchTab('agenda')">Buku Agenda Surat</a></li>
+          <li><a href="#statistik" onclick="switchTab('statistik')">Surat Masuk & Keluar</a></li>
+          <li><a href="#abjad" onclick="switchTab('abjad')">Abjad Filing System</a></li>
+          <li><a href="#template" onclick="switchTab('template')">Template Surat Resmi</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col-links">
+        <h4 class="footer-col-title">Layanan & Keamanan</h4>
+        <ul>
+          <li><a href="#retensi" onclick="switchTab('retensi')">Jadwal Retensi Arsip</a></li>
+          <li><a href="#retensi" onclick="switchTab('retensi')">Pencadangan Cloud S3</a></li>
+          <li><a href="#ulasan" onclick="switchTab('ulasan')">Penilaian Reviewer Anonim</a></li>
+          <li><a href="#kontak" onclick="switchTab('kontak')">Layanan CS & Pengaduan</a></li>
+          <li><a href="javascript:void(0)" onclick="openAuthModal()">Login Pengelola Arsip</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col-system">
+        <h4 class="footer-col-title">Status Sistem</h4>
+        <div class="system-badge-list">
+          <div class="sys-badge-item"><i class="fa-solid fa-shield-cat text-success"></i> RBAC Role-Based Access</div>
+          <div class="sys-badge-item"><i class="fa-solid fa-cloud-arrow-up text-sage"></i> Cloud S3 Mirror Active</div>
+          <div class="sys-badge-item"><i class="fa-solid fa-database text-terracotta"></i> On-Premise NAS RAID-5</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="footer-bottom-container">
+        <p>&copy; 2026 PT BUMI STATIONERY. Hak Cipta Dilindungi Undang-Undang. Sistem Kearsipan Digital Terpadu.</p>
+        <div class="footer-role-switch">
+          <span>Peran Aktif: <strong id="footerActiveRole">Tamu</strong></span>
+          <a href="javascript:void(0)" onclick="openAuthModal()">(Ubah / Login)</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== FLOATING INTERACTIVE CS CHATBOT ==================== -->
+  <div class="floating-cs-widget" id="floatingCSWidget">
+    <!-- Chat Bubble Toggle Button -->
+    <button class="cs-bubble-btn" id="csBubbleBtn" onclick="toggleCSChatBox()" aria-label="Buka Chat CS">
+      <i class="fa-solid fa-comments"></i>
+      <span class="cs-bubble-tooltip">Butuh bantuan arsip? Hubungi CS kami!</span>
+    </button>
+
+    <!-- Mini Chat Box Popup -->
+    <div class="cs-chat-box d-none" id="csChatBox">
+      <div class="cs-chat-header">
+        <div class="cs-header-info">
+          <div class="cs-avatar-online">
+            <i class="fa-solid fa-headset"></i>
+            <span class="online-dot"></span>
+          </div>
+          <div>
+            <h5 class="cs-bot-title">Customer Service PT Bumi Stationery</h5>
+            <span class="cs-bot-status">Respon Otomatis & Terhubung ke Email</span>
+          </div>
+        </div>
+        <button class="cs-close-btn" onclick="toggleCSChatBox(false)">&times;</button>
+      </div>
+
+      <div class="cs-chat-messages" id="csChatMessages">
+        <div class="chat-msg bot-msg">
+          <p>Halo! Selamat datang di layanan kearsipan PT BUMI STATIONERY. Ada yang bisa kami bantu terkait pencarian surat, pengadaan kertas & ATK, atau izin berkas?</p>
+          <span class="msg-time">Baru saja</span>
+        </div>
+      </div>
+
+      <div class="cs-chat-quick-replies">
+        <button class="quick-chip" onclick="sendQuickReply('Bagaimana cara melihat isi surat arsip?')">Lihat Isi Surat</button>
+        <button class="quick-chip" onclick="sendQuickReply('Minta bantuan pengadaan alat tulis kantor')">Pengadaan ATK</button>
+        <button class="quick-chip" onclick="sendQuickReply('Hubungi staf arsip via email')">Kirim Email</button>
+      </div>
+
+      <form class="cs-chat-input-bar" onsubmit="handleSendCSChat(event)">
+        <input type="text" id="csChatInput" placeholder="Ketik pertanyaan Anda..." autocomplete="off">
+        <button type="submit" class="btn-send-chat" aria-label="Kirim"><i class="fa-solid fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. LOGIN & ACCESS CONTROL MODAL (Item #6 & #8) -->
+  <div class="modal-overlay d-none" id="authModal">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <i class="fa-solid fa-user-shield text-terracotta"></i>
+          <div>
+            <h3 class="modal-title">Hak Akses & Login Sistem</h3>
+            <p class="modal-subtitle">Pilih akun untuk mengakses atau mengelola dokumen arsip</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Access Restriction Alert (when visitor clicks letter content) -->
+        <div class="login-gate-banner mb-3" id="loginGateAlert">
+          <i class="fa-solid fa-lock text-terracotta"></i>
+          <div>
+            <strong>Akses Dibatasi untuk Pengunjung</strong>
+            <p class="text-xs">Isi arsip internal hanya dapat dibuka oleh personel terdaftar. Silakan login sebagai <strong>Admin</strong> atau <strong>User (Staf Kearsipan)</strong>.</p>
+          </div>
+        </div>
+
+        <!-- Quick Demo Role Selector (One-click ease of testing) -->
+        <div class="demo-login-box">
+          <span class="demo-box-label">Pilih Peran Demo untuk Uji Coba Cepat:</span>
+          <div class="demo-btn-row">
+            <button class="btn btn-sm btn-outline-terracotta" onclick="quickLoginRole('admin')">
+              <i class="fa-solid fa-user-gear"></i> <strong>Login sbg Admin</strong>
+              <small class="d-block text-xs">Akses penuh: Edit, Hapus, Backup, JRA</small>
+            </button>
+            <button class="btn btn-sm btn-outline-sage" onclick="quickLoginRole('user')">
+              <i class="fa-solid fa-user-check"></i> <strong>Login sbg User/Staf</strong>
+              <small class="d-block text-xs">Akses lihat, unduh, pratinjau surat</small>
+            </button>
+          </div>
+        </div>
+
+        <div class="divider-text">atau gunakan form kredensial</div>
+
+        <form id="authForm" onsubmit="handleAuthSubmit(event)">
+          <div class="form-group">
+            <label for="authUsername">Nama Pengguna (Username):</label>
+            <input type="text" id="authUsername" class="form-control" placeholder="admin atau staf" required>
+            <small class="form-hint">Admin: <code>admin</code> | Staf: <code>staf</code></small>
+          </div>
+
+          <div class="form-group">
+            <label for="authPassword">Kata Sandi (Password):</label>
+            <input type="password" id="authPassword" class="form-control" placeholder="Masukkan password" required>
+            <small class="form-hint">Admin: <code>admin123</code> | Staf: <code>staf123</code></small>
+          </div>
+
+          <div class="form-group">
+            <label for="authRoleSelect">Hak Akses Yang Diminta:</label>
+            <select id="authRoleSelect" class="form-select">
+              <option value="admin">Administrator (Akses Penuh)</option>
+              <option value="user">User / Staf Kearsipan (Akses Baca & Pratinjau)</option>
+            </select>
+          </div>
+
+          <div class="modal-footer-actions">
+            <button type="button" class="btn btn-outline" onclick="logoutToGuest()">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar ke Tamu
+            </button>
+            <button type="submit" class="btn btn-terracotta">
+              <i class="fa-solid fa-right-to-bracket"></i> Masuk Sekarang
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. DOCUMENT PREVIEW MODAL (Item #12 - In-Browser Preview without downloading) -->
+  <div class="modal-overlay d-none" id="docPreviewModal">
+    <div class="modal-container modal-xl">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <i class="fa-solid fa-file-pdf text-terracotta"></i>
+          <div>
+            <h3 class="modal-title" id="previewModalDocTitle">Pratinjau Dokumen Arsip</h3>
+            <p class="modal-subtitle" id="previewModalDocMeta">Nomor Surat • Klasifikasi Abjad</p>
+          </div>
+        </div>
+        <div class="preview-modal-controls">
+          <button class="btn btn-sm btn-outline" onclick="printModalDoc()"><i class="fa-solid fa-print"></i> Cetak</button>
+          <button class="btn btn-sm btn-terracotta" onclick="downloadCurrentPreviewDoc()"><i class="fa-solid fa-download"></i> Unduh Berkas</button>
+          <button class="modal-close-btn" onclick="closeModal('docPreviewModal')">&times;</button>
+        </div>
+      </div>
+
+      <div class="modal-body preview-modal-body">
+        <div class="preview-layout-split">
+          <!-- Document Rendering Canvas/Paper -->
+          <div class="preview-document-render" id="previewDocPaper">
+            <!-- Dynamically populated with authentic Kop Surat, letter body, and verification badge -->
+          </div>
+
+          <!-- Document Metadata & Audit Log Sidebar -->
+          <div class="preview-metadata-sidebar">
+            <h4 class="sidebar-heading"><i class="fa-solid fa-circle-info"></i> Metadata Berkas</h4>
+            <div class="meta-item-box">
+              <span class="meta-field-name">Kode Klasifikasi Abjad:</span>
+              <strong id="metaFilingCode">-</strong>
+            </div>
+            <div class="meta-item-box">
+              <span class="meta-field-name">Jenis Berkas:</span>
+              <strong id="metaDocType">-</strong>
+            </div>
+            <div class="meta-item-box">
+              <span class="meta-field-name">Tanggal Surat:</span>
+              <strong id="metaDocDate">-</strong>
+            </div>
+            <div class="meta-item-box">
+              <span class="meta-field-name">Pengirim:</span>
+              <strong id="metaDocSender">-</strong>
+            </div>
+            <div class="meta-item-box">
+              <span class="meta-field-name">Penerima:</span>
+              <strong id="metaDocRecipient">-</strong>
+            </div>
+            <div class="meta-item-box">
+              <span class="meta-field-name">Tingkat Kerahasiaan:</span>
+              <strong id="metaDocSecurity">-</strong>
+            </div>
+            <div class="meta-item-box">
+              <span class="meta-field-name">Lokasi Fisik / Folder:</span>
+              <strong id="metaDocLocation">-</strong>
+            </div>
+            <div class="meta-item-box">
+              <span class="meta-field-name">Masa Retensi:</span>
+              <strong id="metaDocRetention">-</strong>
+            </div>
+
+            <div class="audit-trail-box mt-3">
+              <h5 class="audit-title"><i class="fa-solid fa-fingerprint"></i> Integritas & Keamanan</h5>
+              <p class="text-xs text-muted">Hash SHA-256 Terverifikasi: <code>a7f8b9...c34d</code></p>
+              <p class="text-xs text-muted">Akses Terbuka oleh: <strong id="metaViewerRole">Staf Kearsipan</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ADD / EDIT LETTER MODAL (Item #1) -->
+  <div class="modal-overlay d-none" id="letterModal">
+    <div class="modal-container modal-md">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <i class="fa-solid fa-file-circle-plus text-terracotta"></i>
+          <div>
+            <h3 class="modal-title" id="letterModalTitle">Tambah Arsip Surat Baru</h3>
+            <p class="modal-subtitle">Daftarkan surat ke dalam Buku Agenda dan Abjad Filing System</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('letterModal')">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="letterEntryForm" onsubmit="handleLetterFormSubmit(event)">
+          <input type="hidden" id="letterEditId" value="">
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="formNomorSurat">Nomor Surat Resmi: *</label>
+              <input type="text" id="formNomorSurat" class="form-control" placeholder="Contoh: 124/BS-M/X/2026" required>
+            </div>
+            <div class="form-group">
+              <label for="formTanggalSurat">Tanggal Surat: *</label>
+              <input type="date" id="formTanggalSurat" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="formJenisSurat">Jenis Surat: *</label>
+              <select id="formJenisSurat" class="form-select" required>
+                <option value="Surat Masuk">Surat Masuk</option>
+                <option value="Surat Keluar">Surat Keluar</option>
+                <option value="Surat Keputusan">Surat Keputusan (SK)</option>
+                <option value="Perjanjian Kerja Sama">Perjanjian Kerja Sama</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="formIndeksAbjad">Indeks Abjad (A - Z): *</label>
+              <select id="formIndeksAbjad" class="form-select" required>
+                <!-- Generated A-Z -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="formPengirim">Pengirim / Instansi Asal: *</label>
+              <input type="text" id="formPengirim" class="form-control" placeholder="Contoh: PT Berkah Grafika Mandiri" required>
+            </div>
+            <div class="form-group">
+              <label for="formPenerima">Penerima / Ditujukan Kepada: *</label>
+              <input type="text" id="formPenerima" class="form-control" placeholder="Contoh: Manajer Logistik PT Bumi Stationery" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="formPerihal">Perihal / Ringkasan Isi Surat: *</label>
+            <textarea id="formPerihal" class="form-control" rows="2" placeholder="Jelaskan secara ringkas maksud dan tujuan surat..." required></textarea>
+          </div>
+
+          <div class="form-row-3">
+            <div class="form-group">
+              <label for="formStatusRetensi">Status Retensi:</label>
+              <select id="formStatusRetensi" class="form-select">
+                <option value="Aktif">Aktif (2-5 Tahun)</option>
+                <option value="Inaktif">Inaktif (Penyimpanan)</option>
+                <option value="Permanen">Permanen (Sejarah)</option>
+                <option value="Siap Musnah">Siap Musnah</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="formKerahasiaan">Tingkat Kerahasiaan:</label>
+              <select id="formKerahasiaan" class="form-select">
+                <option value="Biasa / Terbuka">Biasa / Terbuka</option>
+                <option value="Terbatas">Terbatas</option>
+                <option value="Rahasia">Rahasia</option>
+                <option value="Sangat Rahasia">Sangat Rahasia</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="formLokasiFisik">Lokasi Folder Fisik:</label>
+              <input type="text" id="formLokasiFisik" class="form-control" placeholder="Laci B-02 / Bantex 14">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="formIsiDokumen">Isi Teks Dokumen Lengkap (Untuk Pratinjau):</label>
+            <textarea id="formIsiDokumen" class="form-control" rows="4" placeholder="Ketik atau tempel isi surat..."></textarea>
+          </div>
+
+          <div class="modal-footer-actions">
+            <button type="button" class="btn btn-outline" onclick="closeModal('letterModal')">Batal</button>
+            <button type="submit" class="btn btn-terracotta">
+              <i class="fa-solid fa-floppy-disk"></i> Simpan Arsip
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. BATCH UPLOAD (DRAG & DROP) & CSV METADATA IMPORT MODAL (Item #14) -->
+  <div class="modal-overlay d-none" id="batchUploadModal">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <i class="fa-solid fa-cloud-arrow-up text-terracotta"></i>
+          <div>
+            <h3 class="modal-title">Unggah Banyak File (Batch Drag & Drop) & Impor CSV</h3>
+            <p class="modal-subtitle">Migrasi data massal berkas fisik lama dan metadata digital</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('batchUploadModal')">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="batch-tabs-nav">
+          <button class="batch-tab-btn active" onclick="switchBatchTab('files')"><i class="fa-solid fa-file-arrow-up"></i> Upload Banyak Dokumen (Drag & Drop)</button>
+          <button class="batch-tab-btn" onclick="switchBatchTab('csv')"><i class="fa-solid fa-file-csv"></i> Impor Metadata Excel/CSV</button>
+        </div>
+
+        <!-- Tab 1: Drag & Drop Files -->
+        <div class="batch-tab-content" id="batchTabFiles">
+          <div class="dropzone-area" id="dropzoneArea">
+            <i class="fa-solid fa-cloud-arrow-up dropzone-icon"></i>
+            <h4>Seret dan Lepaskan File Arsip ke Sini</h4>
+            <p>Mendukung format PDF, DOCX, JPG, PNG, dan SCAN hingga 50 MB per file</p>
+            <button type="button" class="btn btn-outline-terracotta mt-2" onclick="document.getElementById('batchFileInput').click()">
+              Pilih File dari Komputer
+            </button>
+            <input type="file" id="batchFileInput" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display: none;" onchange="handleBatchFileSelect(event)">
+          </div>
+
+          <!-- Uploaded Files Queue List -->
+          <div class="queue-list-container d-none" id="uploadQueueContainer">
+            <div class="queue-header">
+              <span>Daftar File Siap Diunggah (<strong id="queueCount">0</strong>)</span>
+              <button class="btn btn-xs btn-outline" onclick="clearUploadQueue()">Bersihkan Semua</button>
+            </div>
+            <div class="queue-items-box" id="queueItemsBox">
+              <!-- Dynamically populated queue items with progress bars -->
+            </div>
+            <div class="mt-3 text-end">
+              <button class="btn btn-terracotta" id="btnProcessBatch" onclick="processBatchUpload()">
+                <i class="fa-solid fa-upload"></i> Proses & Simpan ke Agenda
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: CSV Metadata Import -->
+        <div class="batch-tab-content d-none" id="batchTabCSV">
+          <div class="csv-import-box">
+            <div class="csv-instruction-card">
+              <h5><i class="fa-solid fa-circle-info"></i> Petunjuk Impor Metadata Arsip:</h5>
+              <ol class="csv-steps">
+                <li>Unduh template file CSV resmi PT BUMI STATIONERY melalui tombol di bawah.</li>
+                <li>Buka di Microsoft Excel atau Google Sheets, lengkapi nomor surat, pengirim, perihal, dll.</li>
+                <li>Simpan kembali sebagai file <code>.csv</code> dan unggah ke formulir berikut.</li>
+              </ol>
+              <button class="btn btn-sm btn-outline" onclick="downloadSampleCSVTemplate()">
+                <i class="fa-solid fa-download"></i> Unduh Format Template CSV
+              </button>
+            </div>
+
+            <div class="csv-upload-dropzone mt-3" id="csvDropzone">
+              <i class="fa-solid fa-file-csv dropzone-icon text-sage"></i>
+              <h4>Pilih atau Tarik File CSV ke Sini</h4>
+              <p>Mendukung format .CSV (Comma Separated Values) dengan pemisah koma atau titik koma</p>
+              <input type="file" id="csvFileInput" accept=".csv" class="form-control mt-2" onchange="handleCSVFileSelect(event)">
+            </div>
+
+            <div class="csv-preview-box d-none mt-3" id="csvPreviewBox">
+              <h6>Pratinjau Data CSV (<strong id="csvRowCount">0</strong> baris terdeteksi):</h6>
+              <div class="table-responsive-wrapper" style="max-height: 200px;">
+                <table class="custom-table" id="csvPreviewTable">
+                  <thead></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="mt-3 text-end">
+                <button class="btn btn-terracotta" onclick="confirmImportCSV()">
+                  <i class="fa-solid fa-check"></i> Impor Seluruh Data ke Buku Agenda
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ADD DOCUMENTATION (MEDIA) MODAL (Item #4) -->
+  <div class="modal-overlay d-none" id="addDocMediaModal">
+    <div class="modal-container modal-md">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <i class="fa-solid fa-photo-film text-terracotta"></i>
+          <div>
+            <h3 class="modal-title">Tambah Arsip Kegiatan Baru</h3>
+            <p class="modal-subtitle">Unggah foto atau tautan video dokumentasi perusahaan</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('addDocMediaModal')">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="mediaEntryForm" onsubmit="handleMediaFormSubmit(event)">
+          <div class="form-group">
+            <label for="mediaJudul">Judul Kegiatan: *</label>
+            <input type="text" id="mediaJudul" class="form-control" placeholder="Contoh: Pameran Kertas & Stationery Expo 2026" required>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="mediaKategori">Kategori Media: *</label>
+              <select id="mediaKategori" class="form-select" required>
+                <option value="foto">Foto Kegiatan</option>
+                <option value="video">Video Dokumentasi</option>
+                <option value="csr">CSR & Sosial</option>
+                <option value="pameran">Pameran & Expo</option>
+                <option value="pelatihan">Pelatihan Kearsipan</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="mediaTanggal">Tanggal Kegiatan: *</label>
+              <input type="date" id="mediaTanggal" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="mediaLokasi">Lokasi Kegiatan:</label>
+            <input type="text" id="mediaLokasi" class="form-control" placeholder="Contoh: Jakarta Convention Center (JCC) Senayan">
+          </div>
+
+          <div class="form-group">
+            <label for="mediaDeskripsi">Deskripsi Singkat:</label>
+            <textarea id="mediaDeskripsi" rows="3" class="form-control" placeholder="Jelaskan jalannya acara dan pencapaian kegiatan..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="mediaImageSelect">Pilih Ilustrasi Gambar / Banner:</label>
+            <select id="mediaImageSelect" class="form-select">
+              <option value="pameran">Pameran Alat Tulis & Kertas</option>
+              <option value="csr">CSR Pembagian Paket Sekolah</option>
+              <option value="pelatihan">Pelatihan Kearsipan & ISO</option>
+              <option value="gudang">Peresmian Gudang Logistik</option>
+              <option value="rapat">Rapat Kerja Tahunan Direksi</option>
+            </select>
+          </div>
+
+          <div class="modal-footer-actions">
+            <button type="button" class="btn btn-outline" onclick="closeModal('addDocMediaModal')">Batal</button>
+            <button type="submit" class="btn btn-terracotta">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Dokumentasi
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. MEDIA LIGHTBOX / VIDEO VIEWER MODAL -->
+  <div class="modal-overlay d-none" id="mediaLightboxModal">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title" id="lightboxTitle">Judul Media</h3>
+        <button class="modal-close-btn" onclick="closeModal('mediaLightboxModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="lightbox-display-area" id="lightboxDisplayArea">
+          <!-- Dynamically populated image or video player -->
+        </div>
+        <div class="lightbox-meta-details mt-3">
+          <p id="lightboxDescription" class="mb-2 text-muted"></p>
+          <div class="lightbox-tags-row">
+            <span class="badge badge-sage" id="lightboxDateTag"></span>
+            <span class="badge badge-terracotta" id="lightboxLocTag"></span>
+            <span class="badge badge-accent" id="lightboxCatTag"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. ARCHIVAL FILING RULES EXPLANATION MODAL (Perka ANRI Guidelines) -->
+  <div class="modal-overlay d-none" id="archivalRulesModal">
+    <div class="modal-container modal-md">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <i class="fa-solid fa-book-atlas text-terracotta"></i>
+          <div>
+            <h3 class="modal-title">Pedoman Sistem Abjad (Alphabetical Filing)</h3>
+            <p class="modal-subtitle">Standar Kearsipan Nasional PT BUMI STATIONERY</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('archivalRulesModal')">&times;</button>
+      </div>
+      <div class="modal-body text-sm">
+        <p>Sistem abjad merupakan sistem penataan berkas dengan menggunakan abjad (A-Z) sebagai kata tangkap primer. Berikut aturan mengindeks yang digunakan:</p>
+        <div class="rule-box-styled mt-2">
+          <strong>1. Nama Badan Usaha / Perusahaan (PT, CV, Fa):</strong>
+          <p>Bentuk badan hukum (PT, CV, UD) diletakkan di akhir (Unit 2). Kata nama utama perusahaan menjadi Unit 1 (Kata Tangkap Indeks).</p>
+          <code>PT Berkah Grafika Mandiri &rarr; Berkah Grafika Mandiri, PT (Folder B)</code>
+        </div>
+        <div class="rule-box-styled mt-2">
+          <strong>2. Nama Instansi Pemerintah:</strong>
+          <p>Kata tangkap utama adalah nama substansi fungsi instansi.</p>
+          <code>Kementerian Keuangan RI &rarr; Keuangan, Kementerian (RI) (Folder K)</code>
+        </div>
+        <div class="rule-box-styled mt-2">
+          <strong>3. Nama Perorangan:</strong>
+          <p>Nama keluarga/marga diutamakan. Jika nama tunggal, diindeks apa adanya.</p>
+          <code>Bambang Hartono &rarr; Hartono, Bambang (Folder H)</code>
+        </div>
+        <div class="rule-box-styled mt-2">
+          <strong>4. Guide Primer & Sekunder:</strong>
+          <p>Guide Primer berupa sekat huruf besar (A, B, C...). Guide Sekunder berupa sub-folder nama badan/instansi terkait.</p>
+        </div>
+      </div>
+      <div class="modal-footer-actions">
+        <button class="btn btn-terracotta" onclick="closeModal('archivalRulesModal')">Mengerti</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- External JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
